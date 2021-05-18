@@ -3,10 +3,10 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-import LocationModal from 'react-bootstrap/Modal'
 
 
-const API_KEY = 'pk.45e40665638c57469563d1aac7854979'
+
+const API_KEY = process.env.REACT_APP_CITY_KEY
 
   
   class locationform extends React.Component {
@@ -16,6 +16,7 @@ const API_KEY = 'pk.45e40665638c57469563d1aac7854979'
       data: [],
       location: {},
        searchQuery:'',
+       modalState: false,
   
     }
     
@@ -47,6 +48,7 @@ const API_KEY = 'pk.45e40665638c57469563d1aac7854979'
       Explore!
     </Button>
       </Form>
+
       </div>
   
   )
