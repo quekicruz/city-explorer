@@ -3,55 +3,50 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-import LocationRender from './locationrender.js'
+import LocationModal from 'react-bootstrap/Modal'
 
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+const API_KEY = 'pk.45e40665638c57469563d1aac7854979'
 
   
   class locationform extends React.Component {
     constructor(props) {
     super(props)
     this.State = {
+      data: [],
       location: {},
        searchQuery:'',
   
     }
     
   }
-
-
-  setLocationData = (data) => {
-    this.setState({ data: data});
-  }
-
-
-  setLocation = (locationObj) => {
-    this.setState({ location: locationObj }, () => console.log(this.state));
-  }
   
-
+  
   getLocationData = async (event) => {
     event.preventDefault();
     console.log()
-    let USAPI = await axios.get(`https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`);
-    this.setLocation(USAPI.data[0]);
-    let EUROAPI = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`);
-    this.setLocation(EUROAPI.data[0]);
+    const USAPI = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
+       const res = await axios.get(USAPI);
+       console.log(res.data[0])
+      this.setState({ location:res.data[0] });
+      this.setState({toggle:true});
+    const EUROAPI = `https://eu1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`
+    const eurores = await axios.get(EUROAPI);
+    this.setState({ location:eurores.data[0] });
+    this.setState({toggle:true});
   }
   
   
   render(){
     return (
       <div id="form">
-      <Form>
+      <Form onSubmit={(e) => this.getLocationData(e)} >
       <Form.Label>Enter The City You Would Like To Explore</Form.Label>
       <Form.Control id="formentry" onChange={(e) => this.setState({ searchQuery: e.target.value })} type='text'  placeholder="Enter City Name" />
-    <Button variant="success" onSubmit={(e) => this.getLocationData(e)} >
+    <Button variant="success" type="submit">
       Explore!
     </Button>
       </Form>
-      <LocationRender location={this.state.location.display_name} lat={this.state.location.lat} lon={this.state.location.lon} img={this.state.img}/>
       </div>
   
   )
