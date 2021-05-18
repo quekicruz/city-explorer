@@ -1,5 +1,19 @@
 .App {
   text-align: center;
+  background-color: #2F4454; 
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#form {
+  display: flex;
+  justify-content: center;
+
+}
+
+#form-placeholder {
+  text-align: center ;
 }
 
 .App-logo {
