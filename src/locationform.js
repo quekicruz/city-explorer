@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
+
 import React from 'react'
 import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 // import LocationRender from './locationrender'
-import WeatherInput from './weather';
+// import WeatherInput from './weather';
 
 
 const API_KEY = process.env.REACT_APP_API_CITY_KEY
@@ -68,7 +68,7 @@ class locationform extends React.Component {
               <input onChange={(e) => this.setState({ search: e.target.value })} placeholder='Find City' type='text' />
             </Form.Label>
           </Form.Group>
-          <Button variant="success" type="button" onClick={this.usLocationData, this.euroLocationData}>Explore</Button>
+          <Button variant="success" type="button" onClick={this.usLocationData}>Explore</Button>
           <Form.Group><Button variant="primary" type="button">Get The Weather</Button></Form.Group>
           <Form.Text>
             <div id="locationTitle">{this.state.location.display_name ? <div>{this.state.location.display_name}, {this.state.location.lat}, {this.state.location.lon}</div> : ''}</div>
