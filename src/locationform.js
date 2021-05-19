@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 // import LocationRender from './locationrender'
+import WeatherInput from './weather';
 
 
 const API_KEY = process.env.REACT_APP_API_CITY_KEY
@@ -74,6 +75,7 @@ class locationform extends React.Component {
           </Form.Text>
           {/* <img src={this.state.map ? this.state.map : null} alt="Location-Map" />  */}
         </Form>
+        {/* <WeatherInput /> */}
 
       </div>
 
