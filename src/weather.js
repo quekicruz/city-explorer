@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Button from 'react-bootstrap/Button'
 
 
 
@@ -20,7 +20,7 @@ class WeatherInput extends React.Component {
   render() {
     return (
       <div>
-        <button variant="danger">Get A Weather Update</button>
+        <Button variant="danger">Get A Weather Update</Button>
       </div>
     )
   }
