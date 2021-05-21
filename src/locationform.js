@@ -3,8 +3,10 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-// import LocationRender from './locationrender'
-// import WeatherInput from './weather';
+import WeatherInput from './weather'
+import LocationGrabber from './locationgrabber'
+import Movies from './movies'
+import MapImage from './mapimage'
 
 
 const API_KEY = process.env.REACT_APP_API_CITY_KEY
@@ -18,49 +20,51 @@ class locationform extends React.Component {
       location: {},
       searchQuery: '',
       map: null,
-      forecast: null,
+      forecast: [],
       weather: null,
-      movie: {},
+      movie: '',
+      img: {},
     }
 
   }
 
-  usLocationData = (e) => {
-    axios.get(`https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
+  getLocationData = () => {
+    let response = axios.get(`https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
+
     .then(response => {
       let location = response.data[0];
       console.log(response.data[0])
-        this.setState({
-          location: location, map: `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=10`
-        })
+        this.setState({location: location})
+        this.retrieveWeatherData(response.data[0])
+        this.retrieveMovieData(response.data[0])
+        this.retrieveMapData(response.data[0])
       })
       .catch(error => { console.log("Error, can not be displayed")})
+
+      console.log(response)
   }
 
 
-  euroLocationData = (e) => {
-    axios.get(`https://eu1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
-      .then(response => {
-        let location = response.data[0];
-        this.setState({
-          location: location,
-          map: `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=10`
-        })
-      })
-      .catch(error => { console.log("Error, can not be displayed") })
-  }
-
-  getWeatherData = (e) => {
+  retrieveWeatherData = (e) => {
     axios.get(`https://localhost:3050/weather?lat=${e.lat}&lon=${e.lon}&searchQuery=${e.display_name}`)
     .then(response => {
-        this.setState({forecast: response.data})
+        this.setState({forecast: response.data[0]})
         console.log(response.data);
     }) 
   }
 
 
-  getMovieData = (e) => {
+  retrieveMapData = (area) => {
+    let mapImg = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${area.lat},${area.lon}&zoom=15`
+    this.setState({img: mapImg});
+  }
+
+
+  retrieveMovieData = () => {
     axios.get(`http://localhost:3050/movies/?name=${this.state.searchQuery}`)
+    .then(response => {
+      this.setState({movies: response.data})
+    })
   }
 
   render() {
@@ -76,16 +80,12 @@ class locationform extends React.Component {
               <input onChange={(e) => this.setState({ searchQuery: e.target.value })} placeholder='Find City' type='text' />
             </Form.Label>
           </Form.Group>
-          <Button variant="success" type="button" onClick={this.usLocationData}>Explore</Button>
-          <Form.Group><Button variant="primary" onClick={this.getWeatherData} type="button">Get The Weather</Button></Form.Group>
-          <Form.Group><Button variant="primary" onClick={this.getMovieData} type="button">Get The Movie</Button></Form.Group>
-          <Form.Group>
-          <Form.Text>
-            <div id="locationTitle">{this.state.location.display_name ? <div>{this.state.location.display_name}, {this.state.location.lat}, {this.state.location.lon}, <img src={this.state.map} alt="Displayname"/>, {this.state.forecast} </div> : ''}</div>
-          </Form.Text>
-          </Form.Group>
+          <Button variant="success" type="button" onClick={this.getLocationData}>Explore</Button>
         </Form>
-        {/* <WeatherInput /> */}
+          <LocationGrabber location={this.state.location.display_name} lat={this.state.location.lat} lon={this.state.location.lon} img={this.state.img} />
+          <WeatherInput />
+          <Movies />
+          <MapImage img={this.state.img}/>
 
       </div>
 
