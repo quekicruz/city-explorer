@@ -1,26 +1,17 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button'
-
+// import Card from 'react-bootstrap/Card'
+import './App.css';
 
 
 class WeatherInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      weather: null,
-    }
-  }
-
-// retrieveWeather = () => {
-//   .then(response => {
-//     this.state.weather.response;
-//   }
-// }
 
   render() {
+    // let newWeather = this.props.forecast.map((day,idx) => (
+    //   <Card.Text key={idx}>{`${day}`}</Card.Text>
+    // ))
     return (
       <div>
-        <Button variant="danger">Get A Weather Update</Button>
+       {/* <Card>{newWeather}</Card> */}
       </div>
     )
   }
