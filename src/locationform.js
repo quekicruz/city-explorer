@@ -7,6 +7,7 @@ import WeatherInput from './weather'
 import LocationGrabber from './locationgrabber'
 import Movies from './movies'
 import MapImage from './mapimage'
+import Error from './error'
 
 
 const API_KEY = process.env.REACT_APP_API_CITY_KEY
@@ -24,6 +25,8 @@ class locationform extends React.Component {
       weather: null,
       movie: '',
       img: {},
+      showError: false,
+      error: undefined
     }
 
   }
@@ -39,7 +42,7 @@ class locationform extends React.Component {
         this.retrieveMovieData(response.data[0])
         this.retrieveMapData(response.data[0])
       })
-      .catch(error => { console.log("Error, can not be displayed")})
+      .catch(error => this.generateError(error))
 
       console.log(response)
   }
@@ -64,13 +67,31 @@ class locationform extends React.Component {
     axios.get(`http://localhost:3050/movies/?name=${this.state.searchQuery}`)
     .then(response => {
       this.setState({movies: response.data})
+      this.setState({error: ''});
+    this.setState({showError: false});
     })
+    .catch(error => this.generateError(error));
+  }
+
+
+  generateError = (error) => {
+
+    if (this.state.showError === false){
+      this.setState({showError: true}); 
+      this.setState({error: error.toString()});
+      } else {
+      console.log(this.state.showError);
+    }
   }
 
   render() {
     return (
 
+
       <div className='locationForm'>
+
+           {/* <Error error={this.state.error} showError={this.state.showError}/> */}
+
         <Form>
           <Form.Label>
             Enter Desired City
