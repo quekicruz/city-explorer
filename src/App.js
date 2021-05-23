@@ -1,4 +1,3 @@
-
 import './App.css';
 import LocationForm from './locationform.js';
 import Header from './header.js';

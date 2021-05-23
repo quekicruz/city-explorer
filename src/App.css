@@ -6,6 +6,11 @@
   margin-right: auto;
 }
 
+body {
+  background-color:  #2F4454;
+}
+
+
 #form {
   display: flex;
   justify-content: center;
