@@ -3,7 +3,7 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-import WeatherInput from './weather'
+// import WeatherInput from './weather'
 import LocationGrabber from './locationgrabber'
 // import Movies from './movies'
 import MapImage from './mapimage'
@@ -34,7 +34,6 @@ class locationform extends React.Component {
 
   }
 
-  
 
   getLocationData = () => {
     let response = axios.get(`https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
@@ -47,23 +46,25 @@ class locationform extends React.Component {
           lon: location.lon,
           display_name: location.display_name,
         });
+        console.log('This is the state of lat and lon after .get', this.state.lat, this.state.lon);
         this.setState({location: location})
-        this.retrieveMovieData(response.data[0])
+        this.retrieveMovieData(this.state.searchQuery)
         this.retrieveMapData(response.data[0])
+        this.retrieveWeatherData(this.state.lat, this.state.lon)
       })
       .catch(error => this.generateError(error))
       
-      this.retrieveWeatherData()
       console.log(response)
   }
 
 
-  retrieveWeatherData = () => {
-    axios.get(`http://localhost:3050/weather`,{params: {
-      lat: this.state.lat,
-      lon: this.state.lon,
-      display_name: this.state.display_name,
+  retrieveWeatherData = async (lat, lon) => { console.log('inside weather data')
+   const weatherData = await axios.get(`http://localhost:3050/weather`,{params: {
+      lat: lat,
+      lon: lon,
+      // display_name: this.state.display_name,
     }})
+    console.log('This is Weather we have been looking for', weatherData)
     .then(response => {
         this.setState({forecast: response.data[0]})
         console.log(response.data);
