@@ -57,18 +57,22 @@ class locationform extends React.Component {
       console.log(response)
   }
 
+  
+  retrieveWeatherData = async (lat, lon) => { 
+    try{
+      console.log('inside weather data')
+      const weatherData = await axios.get(`http://localhost:3050/weather`,{params: {
+        lat: lat,
+        lon: lon,
+        // display_name: this.state.display_name,
+      }})
+      this.setState({weather: weatherData.data});
+      console.log(this.state.weather);
+    } catch(error){
+      console.log('Weather Error', error)
+    }
 
-  retrieveWeatherData = async (lat, lon) => { console.log('inside weather data')
-   const weatherData = await axios.get(`http://localhost:3050/weather`,{params: {
-      lat: lat,
-      lon: lon,
-      // display_name: this.state.display_name,
-    }})
-    console.log('This is Weather we have been looking for', weatherData)
-    .then(response => {
-        this.setState({forecast: response.data[0]})
-        console.log(response.data);
-    }) 
+    
   }
 
 
@@ -100,7 +104,7 @@ class locationform extends React.Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className='locationForm'>
 
